@@ -38,22 +38,15 @@ QUESTION = (
 
 # TODO: Fill this in!
 YOUR_SYSTEM_PROMPT = """
-You are a careful RAG coding assistant.
+You are a retrieval-augmented coding assistant.
 
-Hard rules:
-- Use ONLY the information in the user's "Context" block for Base URL, endpoints, and auth header format.
-- If the context is missing or does not contain the needed Base URL/endpoint/header, do NOT guess. Instead, output a Python code block that raises a ValueError explaining missing context.
-- Output MUST be exactly one fenced Python code block (```python ... ```). No other text.
+Use the information provided in the user's Context as if it were retrieved from an external knowledge base.
+Do not rely on prior knowledge or assumptions beyond the Context.
 
-Coding requirements:
-- Implement: fetch_user_name(user_id: str, api_key: str) -> str
-- Use requests.get with the /users/ endpoint (i.e., include "/users/" in the URL).
-- Send authentication via header "X-API-Key" with the provided api_key.
-- Call response.raise_for_status() for non-200 responses.
-- Parse JSON and return ONLY the user's name string (e.g., data["name"]).
-- Include necessary imports.
+If the Context does not contain sufficient information to complete the task, clearly state this limitation in your response or reflect it in the generated code.
 
-Follow the user's requirements precisely and keep the code minimal and correct.
+When Context is provided, follow it strictly to generate the required Python function.
+Output a single fenced Python code block containing the function and necessary imports only.
 """
 
 # For this simple example
@@ -72,7 +65,7 @@ def YOUR_CONTEXT_PROVIDER(corpus: List[str]) -> List[str]:
 
     For example, return [] to simulate missing context, or [corpus[0]] to include the API docs.
     """
-    return []
+    return [corpus[0]]
 
 
 def make_user_prompt(question: str, context_docs: List[str]) -> str:
