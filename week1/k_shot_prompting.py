@@ -7,7 +7,25 @@ load_dotenv()
 NUM_RUNS_TIMES = 5
 
 # TODO: Fill this in!
-YOUR_SYSTEM_PROMPT = ""
+YOUR_SYSTEM_PROMPT = """
+You are a precise text-transformation engine.
+Task: reverse the order of letters in a single input word.
+
+Rules:
+- Output ONLY the reversed word.
+- Do not add any extra text, punctuation, quotes, or whitespace.
+- Preserve letters exactly as given.
+
+Examples:
+Input: abc
+Output: cba
+
+Input: steel
+Output: leets
+
+Input: 12345
+Output: 54321
+"""
 
 USER_PROMPT = """
 Reverse the order of letters in the following word. Only output the reversed word, no other text:
