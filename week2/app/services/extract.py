@@ -1,12 +1,10 @@
 from __future__ import annotations
 
-import os
-import re
-from typing import List
 import json
-from typing import Any
-from ollama import chat
+import re
+
 from dotenv import load_dotenv
+from ollama import chat
 
 load_dotenv()
 
@@ -31,9 +29,9 @@ def _is_action_line(line: str) -> bool:
     return False
 
 
-def extract_action_items(text: str) -> List[str]:
+def extract_action_items(text: str) -> list[str]:
     lines = text.splitlines()
-    extracted: List[str] = []
+    extracted: list[str] = []
     for raw_line in lines:
         line = raw_line.strip()
         if not line:
@@ -56,7 +54,7 @@ def extract_action_items(text: str) -> List[str]:
                 extracted.append(s)
     # Deduplicate while preserving order
     seen: set[str] = set()
-    unique: List[str] = []
+    unique: list[str] = []
     for item in extracted:
         lowered = item.lower()
         if lowered in seen:
@@ -64,6 +62,61 @@ def extract_action_items(text: str) -> List[str]:
         seen.add(lowered)
         unique.append(item)
     return unique
+
+
+def extract_action_items_llm(text: str, *, model: str = "llama3.1:8b") -> list[str]:
+    """
+    LLM-powered alternative to `extract_action_items()` using Ollama structured outputs.
+    Returns a JSON-derived list of action item strings.
+    """
+    text = (text or "").strip()
+    if not text:
+        return []
+
+    schema = {
+        "type": "object",
+        "properties": {"items": {"type": "array", "items": {"type": "string"}}},
+        "required": ["items"],
+    }
+
+    try:
+        response = chat(
+            model=model,
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "You extract action items from free-form notes. "
+                        "Return only concise, de-duplicated action items."
+                    ),
+                },
+                {"role": "user", "content": text},
+            ],
+            format=schema,
+        )
+        content = str(response.get("message", {}).get("content", "")).strip()
+        parsed = json.loads(content) if content else {}
+        raw_items = parsed.get("items", [])
+        if not isinstance(raw_items, list):
+            return extract_action_items(text)
+
+        cleaned: list[str] = []
+        seen: set[str] = set()
+        for item in raw_items:
+            if not isinstance(item, str):
+                continue
+            s = item.strip()
+            if not s:
+                continue
+            key = s.lower()
+            if key in seen:
+                continue
+            seen.add(key)
+            cleaned.append(s)
+        return cleaned
+    except Exception:
+        # Keep the app usable even if Ollama isn't running or returns invalid JSON.
+        return extract_action_items(text)
 
 
 def _looks_imperative(sentence: str) -> bool:

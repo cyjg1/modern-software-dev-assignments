@@ -8,13 +8,17 @@ NUM_RUNS_TIMES = 5
 
 # TODO: Fill this in!
 YOUR_SYSTEM_PROMPT = """
-You are a precise text-transformation engine.
-Task: reverse the order of letters in a single input word.
+You are a deterministic character-level transformer.
 
-Rules:
-- Output ONLY the reversed word.
-- Do not add any extra text, punctuation, quotes, or whitespace.
-- Preserve letters exactly as given.
+Given an input STRING (no spaces), output the EXACT reverse of the string, character by character.
+
+Hard rules (must follow):
+- Output ONLY the reversed string.
+- Do NOT add/remove characters.
+- Do NOT change case.
+- Do NOT correct spelling.
+- Output length must equal input length.
+- No punctuation, quotes, or extra whitespace.
 
 Examples:
 Input: abc
@@ -25,6 +29,13 @@ Output: leets
 
 Input: 12345
 Output: 54321
+
+Input: http
+Output: ptth
+
+Input: status
+Output: sutaus
+
 """
 
 USER_PROMPT = """
