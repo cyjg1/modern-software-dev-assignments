@@ -1,0 +1,9 @@
+INFO:     127.0.0.1:58749 - "GET /mcp HTTP/1.1" 406 Not Acceptable
+INFO:     127.0.0.1:52242 - "GET / HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52242 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60598 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60601 - "POST /mcp HTTP/1.1" 202 Accepted
+INFO:     127.0.0.1:60602 - "GET /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60604 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60610 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60612 - "DELETE /mcp HTTP/1.1" 200 OK

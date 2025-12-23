@@ -1,0 +1,12 @@
+INFO:     Started server process [26072]
+INFO:     Waiting for application startup.
+StreamableHTTP session manager started
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+Created new transport with session ID: d92cbb1e84574b5ca0d3d9c8d30b9b62
+Created new transport with session ID: 8cbb0fb389d54aee9bd4ef4058eb1053
+Processing request of type CallToolRequest
+HTTP Request: GET https://geocoding-api.open-meteo.com/v1/search?name=Beijing&count=1&language=en&format=json "HTTP/1.1 200 OK"
+HTTP Request: GET https://api.open-meteo.com/v1/forecast?latitude=39.9075&longitude=116.39723&current=temperature_2m%2Capparent_temperature%2Cprecipitation%2Cweather_code%2Cwind_speed_10m&timezone=auto "HTTP/1.1 200 OK"
+Processing request of type ListToolsRequest
+Terminating session: 8cbb0fb389d54aee9bd4ef4058eb1053
